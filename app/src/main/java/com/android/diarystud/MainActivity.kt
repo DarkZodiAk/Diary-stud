@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +16,6 @@ import com.android.diarystud.navigation.DiaryNavHost
 import com.android.diarystud.ui.theme.DiaryStudTheme
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,14 +26,14 @@ class MainActivity : ComponentActivity() {
                             title = {
                                 Text(text = "Дневник студента")
                             },
-                            backgroundColor = Color.Magenta,
+                            backgroundColor = Color.Blue,
                             contentColor = Color.White,
                             elevation = 12.dp
                         )
                     },
                     content = {
                         Surface(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().padding(it),
                             color = MaterialTheme.colors.background
                         ) {
                             DiaryNavHost()

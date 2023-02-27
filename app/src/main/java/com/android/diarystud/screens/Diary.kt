@@ -5,5 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun Diary(navController: NavHostController) {
+fun DiaryScreen(navController: NavHostController) {
+    Text(text = "Notes")
 }
