@@ -21,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
 @Composable
 fun AddScreen(navController: NavHostController) {
     var title by remember { mutableStateOf("") }
@@ -30,7 +30,7 @@ fun AddScreen(navController: NavHostController) {
     Scaffold {
         
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
