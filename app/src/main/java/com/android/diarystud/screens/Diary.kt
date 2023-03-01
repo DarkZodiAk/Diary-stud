@@ -38,8 +38,6 @@ fun DiaryScreen(navController: NavHostController) {
     val mViewModel: MainViewModel =
         viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
 
-    val notes = mViewModel.readTest.observeAsState(listOf()).value
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -49,23 +47,22 @@ fun DiaryScreen(navController: NavHostController) {
                 Icon(imageVector = Icons.Filled.Add , contentDescription = "Add icons", tint = Color.White)
             }
         }
-    ) {
+    ) {}
 //        Column {
 //            NoteItem(title = "Note 1", subtitle = "Subtitle for note 1", navController = navController)
 //            NoteItem(title = "Note 2", subtitle = "Subtitle for note 2", navController = navController)
 //            NoteItem(title = "Note 3", subtitle = "Subtitle for note 3", navController = navController)
 //            NoteItem(title = "Note 4", subtitle = "Subtitle for note 4", navController = navController)
 //        }
-        LazyColumn {
-            items(notes) { note ->
-                NoteItem(note = note, navController = navController)
-            }
-        }
+//        LazyColumn(
+//            modifier = Modifier.padding(it)
+//        ) {
+//            items(notes) { note ->
+//                NoteItem(note = note, navController = navController)
+//            }
+//        }
 
-
-        }
-
-    }
+}
 
 @Composable
 fun NoteItem(note: Note, navController: NavHostController) {

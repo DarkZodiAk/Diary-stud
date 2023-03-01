@@ -40,8 +40,9 @@ fun StartScreen(navController: NavHostController) {
             Text(text = "Добро пожаловать!")
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_ROOM)
-                    navController.navigate(route = NavRoute.Diary.route)
+                    mViewModel.initDatabase(TYPE_ROOM){
+                        navController.navigate(route = NavRoute.Diary.route)
+                    }
                 },
                 modifier = Modifier
                     .width(200.dp)
