@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,35 +32,30 @@ import com.android.diarystud.ui.theme.DiaryStudTheme
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DiaryScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val mViewModel: MainViewModel =
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-
+fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     navController.navigate(NavRoute.Add.route)
                 }) {
-                Icon(imageVector = Icons.Filled.Add , contentDescription = "Add icons", tint = Color.White)
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add icons",
+                    tint = Color.White
+                )
             }
         }
-    ) {}
-//        Column {
-//            NoteItem(title = "Note 1", subtitle = "Subtitle for note 1", navController = navController)
-//            NoteItem(title = "Note 2", subtitle = "Subtitle for note 2", navController = navController)
-//            NoteItem(title = "Note 3", subtitle = "Subtitle for note 3", navController = navController)
-//            NoteItem(title = "Note 4", subtitle = "Subtitle for note 4", navController = navController)
-//        }
-//        LazyColumn(
-//            modifier = Modifier.padding(it)
-//        ) {
-//            items(notes) { note ->
-//                NoteItem(note = note, navController = navController)
-//            }
-//        }
-
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(it)
+        ) {
+            items(notes) { note ->
+                NoteItem(note = note, navController = navController)
+            }
+        }
+    }
 }
 
 @Composable
@@ -71,7 +65,7 @@ fun NoteItem(note: Note, navController: NavHostController) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(NavRoute.Note.route)
+                navController.navigate(NavRoute.Note.route + "/${note.id}")
             },
         elevation = 6.dp
     ) {
@@ -93,6 +87,9 @@ fun NoteItem(note: Note, navController: NavHostController) {
 @Composable
 fun prevDiaryScreen() {
     DiaryStudTheme {
-        DiaryScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        DiaryScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

@@ -18,12 +18,14 @@ import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
+import com.android.diarystud.utils.Constants
+import com.android.diarystud.utils.Constants.Keys.AUTH_WITH_GOOGLE
 import com.android.diarystud.utils.TYPE_ROOM
 
 
 
 @Composable
-fun StartScreen(navController: NavHostController) {
+fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
     val context = LocalContext.current
     val mViewModel: MainViewModel = 
         viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
@@ -37,7 +39,7 @@ fun StartScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Добро пожаловать!")
+            Text(text = Constants.Keys.WELCOME)
             Button(
                 onClick = {
                     mViewModel.initDatabase(TYPE_ROOM){
@@ -48,7 +50,7 @@ fun StartScreen(navController: NavHostController) {
                     .width(200.dp)
                     .padding(vertical = 8.dp)
             ) {
-                Text(text = "Войти через Google")
+                Text(text = AUTH_WITH_GOOGLE)
             }
         }
     }
@@ -58,6 +60,9 @@ fun StartScreen(navController: NavHostController) {
 @Composable
 fun prevStartScreen() {
     DiaryStudTheme {
-        StartScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        StartScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
