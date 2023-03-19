@@ -42,12 +42,12 @@ fun DrawerBody(
 }
 
 @Composable
-fun DrawerAddFolder(){
+fun DrawerAddFolder(onButtonClick: () -> Unit){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                TODO("ЗДЕСЬ УЖЕ ТИПА ПАПКУ СОЗДАЕМ")
+                onButtonClick()
             }
             .padding(16.dp)
     ){

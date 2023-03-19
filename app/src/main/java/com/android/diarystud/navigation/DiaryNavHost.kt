@@ -5,10 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
-import com.android.diarystud.screens.AddScreen
-import com.android.diarystud.screens.DiaryScreen
-import com.android.diarystud.screens.NoteScreen
-import com.android.diarystud.screens.StartScreen
+import com.android.diarystud.screens.*
 import com.android.diarystud.utils.Constants
 
 
@@ -17,6 +14,7 @@ sealed class NavRoute(val route: String){
     object Diary: NavRoute(Constants.Screens.DIARY_SCREEN);
     object Add: NavRoute(Constants.Screens.ADD_SCREEN);
     object Note: NavRoute(Constants.Screens.NOTE_SCREEN);
+    object AddFolder: NavRoute(Constants.Screens.FOLDER_SCREEN)
 }
 
 @Composable
@@ -26,6 +24,7 @@ fun DiaryNavHost(mViewModel: MainViewModel) {
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
         composable(NavRoute.Start.route){ StartScreen(navController = navController, viewModel = mViewModel) }
         composable(NavRoute.Diary.route){ DiaryScreen(navController = navController, viewModel = mViewModel) }
+        composable(NavRoute.AddFolder.route){ AddFolderScreen(navController = navController, viewModel = mViewModel) }
         composable(NavRoute.Add.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
             AddScreen(
                 navController = navController,

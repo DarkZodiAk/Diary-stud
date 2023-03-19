@@ -51,7 +51,6 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    Log.d("Folder", "$folders")
                     navController.navigate(NavRoute.Add.route + "/${folderId}")
                 }) {
                 Icon(
@@ -77,7 +76,9 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
                     }
                 },
                 bottomBar = {
-                    DrawerAddFolder()
+                    DrawerAddFolder{
+                        navController.navigate(NavRoute.AddFolder.route)
+                    }
                 }
             )
         }
