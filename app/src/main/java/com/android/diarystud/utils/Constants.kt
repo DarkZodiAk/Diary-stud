@@ -1,6 +1,7 @@
 package com.android.diarystud.utils
 
 import com.android.diarystud.database.DatabaseRepository
+import com.android.diarystud.model.Folder
 
 const val TYPE_DATABASE = "type_database"
 const val TYPE_ROOM = "type_room"
@@ -8,10 +9,12 @@ const val TYPE_FIREBASE = "type_firebase"
 
 lateinit var REPOSITORY: DatabaseRepository
 
+
 object Constants {
     object Keys {
         const val NOTE_DATABASE = "notes_database"
         const val NOTES_TABLE = "notes_table"
+        const val FOLDERS_TABLE = "folders_table"
         const val ADD_NEW_NOTE = "Add new note"
         const val NOTE_TITLE = "Note title"
         const val NOTE_SUBTITLE = "Note subtitle"
@@ -20,7 +23,10 @@ object Constants {
         const val SUBTITLE = "Subtitle"
         const val WELCOME = "Добро пожаловать!"
         const val AUTH_WITH_GOOGLE = "Войти через Google"
-        const val ID = "Id"
+        const val ADD_FOLDER = "Создать папку"
+        const val DEFAULT_FOLDER_NAME = "Сегодня"
+        const val NOTE_ID = "note_id"
+        const val FOLDER_ID = "folder_id"
         const val NONE = "none"
         const val UPDATE = "UPDATE"
         const val DELETE = "DELETE"

@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 val context = LocalContext.current
                 val mViewModel: MainViewModel =
                     viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-                Scaffold(
+                /*Scaffold(
                     topBar = {
                         TopAppBar(
                             title = {
@@ -37,15 +37,15 @@ class MainActivity : ComponentActivity() {
                             elevation = 12.dp
                         )
                     },
-                    content = {
+                    content = {*/
                         Surface(
-                            modifier = Modifier.fillMaxSize().padding(it),
+                            modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colors.background
                         ) {
                             DiaryNavHost(mViewModel)
                         }
-                    }
-                )
+                    /*}
+                )*/
             }
         }
     }

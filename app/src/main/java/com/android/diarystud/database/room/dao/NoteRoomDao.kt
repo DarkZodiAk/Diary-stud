@@ -20,3 +20,5 @@ interface NoteRoomDao {
     @Delete
     suspend fun deleteNote(note: Note)
 }
+
+//TODO("Здесь можно потом сортировку бахнуть")

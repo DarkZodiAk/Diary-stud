@@ -1,6 +1,5 @@
 package com.android.diarystud.screens
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.BlendModeColorFilter
 import androidx.compose.foundation.layout.*
@@ -20,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
+import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
@@ -28,16 +28,21 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NoteScreen(
     navController: NavHostController,
     viewModel: MainViewModel,
     noteId: String?,
+    folderId: String?
     /*title: Int*/
 ) {
+    //Эти 4 строки кода... Надо подумать, а можно ли сделать по-другому?
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
-    val note = notes.firstOrNull{ it.id == noteId?.toInt()} ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE)
+    val folders = viewModel.readAllFolders().observeAsState(listOf()).value
+    val note = notes.firstOrNull{ it.id == noteId?.toInt()} ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE, folder = 0)
+    // Вообще по-хорошему надо не !! прописывать, а автоматом выезжать на главную страничку при ошибке
+    val folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = Constants.Keys.NONE)
+
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     var title by remember { mutableStateOf(Constants.Keys.EMPTY) }
@@ -78,7 +83,7 @@ fun NoteScreen(
                         modifier = Modifier.padding(top = 16.dp),
                         onClick = {
                             viewModel.updateNote(note =
-                                Note(id = note.id, title = title, subtitle = subtitle)
+                                Note(id = note.id, title = title, subtitle = subtitle, folder = folderId!!.toInt())
                             ) {
                                 navController.navigate(NavRoute.Diary.route)
                             }
@@ -94,7 +99,9 @@ fun NoteScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -180,6 +187,7 @@ fun prevNoteScreen() {
             navController = rememberNavController(),
             viewModel = mViewModel,
             noteId = "1",
+            folderId = "0"
         )
     }
 }

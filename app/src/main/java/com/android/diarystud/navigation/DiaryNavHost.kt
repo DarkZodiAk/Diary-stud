@@ -26,12 +26,20 @@ fun DiaryNavHost(mViewModel: MainViewModel) {
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
         composable(NavRoute.Start.route){ StartScreen(navController = navController, viewModel = mViewModel) }
         composable(NavRoute.Diary.route){ DiaryScreen(navController = navController, viewModel = mViewModel) }
-        composable(NavRoute.Add.route){ AddScreen(navController = navController, viewModel = mViewModel) }
-        composable(NavRoute.Note.route + "/{${Constants.Keys.ID}}") { backStackEntry ->
+        composable(NavRoute.Add.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
+            AddScreen(
+                navController = navController,
+                viewModel = mViewModel,
+                // Попробуем прямо интом сделать без нулла
+                folderId = backStackEntry.arguments!!.getString(Constants.Keys.FOLDER_ID)!!.toInt()
+            )
+        }
+        composable(NavRoute.Note.route + "/{${Constants.Keys.FOLDER_ID}}/{${Constants.Keys.NOTE_ID}}") { backStackEntry ->
             NoteScreen(
                 navController = navController,
                 viewModel = mViewModel,
-                noteId = backStackEntry.arguments?.getString(Constants.Keys.ID),
+                folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID),
+                noteId = backStackEntry.arguments?.getString(Constants.Keys.NOTE_ID)
             )
         }
     }
