@@ -28,7 +28,7 @@ import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
 import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination
+//@Destination
 @Composable
 fun AddScreen(navController: NavHostController,
               viewModel: MainViewModel,

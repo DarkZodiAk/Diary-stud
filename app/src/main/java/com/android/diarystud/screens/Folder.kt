@@ -19,7 +19,7 @@ import com.android.diarystud.screens.elements.FolderTopAppBar
 import com.android.diarystud.utils.Constants
 import com.ramcosta.composedestinations.annotation.Destination
 
-@Destination
+//@Destination
 @Composable
 fun AddFolderScreen(navController: NavHostController, viewModel: MainViewModel) {
     var title by remember { mutableStateOf("") }

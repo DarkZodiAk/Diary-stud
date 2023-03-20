@@ -37,7 +37,7 @@ import com.android.diarystud.utils.Constants.Keys.DEFAULT_FOLDER_NAME
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
-@Destination
+//@Destination
 @Composable
 fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value

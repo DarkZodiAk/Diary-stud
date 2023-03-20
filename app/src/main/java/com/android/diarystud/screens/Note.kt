@@ -27,7 +27,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
-@Destination
+//@Destination
 @Composable
 fun NoteScreen(
     navController: NavHostController,
