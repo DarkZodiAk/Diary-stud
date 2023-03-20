@@ -21,14 +21,16 @@ import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
 import com.android.diarystud.utils.Constants.Keys.AUTH_WITH_GOOGLE
 import com.android.diarystud.utils.TYPE_ROOM
+import com.ramcosta.composedestinations.annotation.Destination
 
 
-
+@Destination(start = true)
 @Composable
 fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
     val context = LocalContext.current
     val mViewModel: MainViewModel = 
         viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {

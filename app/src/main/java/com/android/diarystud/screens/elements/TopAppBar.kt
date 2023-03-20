@@ -24,7 +24,11 @@ fun DiaryTopAppBar(title: String, onNavigationIconClick: () -> Unit) {
 }
 
 @Composable
-fun FolderTopAppBar(title: String, onCloseClick: () -> Unit, onDoneClick: () -> Unit){
+fun FolderTopAppBar(title: String,
+                    isButtonEnabled: Boolean,
+                    onCloseClick: () -> Unit,
+                    onDoneClick: () -> Unit
+){
     TopAppBar(
         title = { Text(text = title) },
         backgroundColor = MaterialTheme.colors.primary,
@@ -35,7 +39,10 @@ fun FolderTopAppBar(title: String, onCloseClick: () -> Unit, onDoneClick: () -> 
             }
         },
         actions = {
-            IconButton( onClick = { onDoneClick() } ){
+            IconButton(
+                onClick = { onDoneClick() },
+                enabled = isButtonEnabled
+            ){
                 Icon(imageVector = Icons.Default.Done, contentDescription = "Done")
             }
         }

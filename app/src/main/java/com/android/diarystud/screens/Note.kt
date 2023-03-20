@@ -1,7 +1,6 @@
 package com.android.diarystud.screens
 
 import android.app.Application
-import android.graphics.BlendModeColorFilter
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -24,10 +23,11 @@ import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
-import kotlinx.coroutines.coroutineScope
+import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
+@Destination
 @Composable
 fun NoteScreen(
     navController: NavHostController,

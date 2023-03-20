@@ -1,7 +1,6 @@
 package com.android.diarystud.utils
 
 import com.android.diarystud.database.DatabaseRepository
-import com.android.diarystud.model.Folder
 
 const val TYPE_DATABASE = "type_database"
 const val TYPE_ROOM = "type_room"
@@ -24,6 +23,8 @@ object Constants {
         const val WELCOME = "Добро пожаловать!"
         const val AUTH_WITH_GOOGLE = "Войти через Google"
         const val ADD_FOLDER = "Создать папку"
+        const val UPDATE_FOLDER = "Изменить папку"
+        const val FOLDER_TITLE = "Название папки"
         const val DEFAULT_FOLDER_NAME = "Сегодня"
         const val NOTE_ID = "note_id"
         const val FOLDER_ID = "folder_id"

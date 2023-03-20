@@ -1,6 +1,5 @@
 package com.android.diarystud
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -42,6 +41,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     DiaryStudTheme {
-
     }
 }
