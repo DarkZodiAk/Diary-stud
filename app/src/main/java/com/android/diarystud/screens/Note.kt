@@ -23,11 +23,9 @@ import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
-import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
-@Destination
 @Composable
 fun NoteScreen(
     navController: NavHostController,
