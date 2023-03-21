@@ -14,34 +14,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
-import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.screens.destinations.DiaryScreenDestination
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
-//@Destination
+@Destination
 @Composable
 fun NoteScreen(
-    navController: NavHostController,
+    navigator: DestinationsNavigator,
     viewModel: MainViewModel,
-    noteId: String?,
-    folderId: String?
-    /*title: Int*/
+    noteId: Int,
+    folderId: Int
 ) {
     //Эти 4 строки кода... Надо подумать, а можно ли сделать по-другому?
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
-    val note = notes.firstOrNull{ it.id == noteId?.toInt()} ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE, folder = 0)
+    val note = notes.firstOrNull{ it.id == noteId } ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE, folder = 0)
     // Вообще по-хорошему надо не !! прописывать, а автоматом выезжать на главную страничку при ошибке
-    val folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = Constants.Keys.NONE)
+    val folder = folders.firstOrNull { it.id == folderId } ?: Folder(name = Constants.Keys.NONE)
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -85,7 +83,7 @@ fun NoteScreen(
                             viewModel.updateNote(note =
                                 Note(id = note.id, title = title, subtitle = subtitle, folder = folderId!!.toInt())
                             ) {
-                                navController.navigate(NavRoute.Diary.route)
+                                navigator.navigate(DiaryScreenDestination)
                             }
                         }
                     ) {
@@ -148,7 +146,7 @@ fun NoteScreen(
                     }
                     Button(onClick = {
                         viewModel.deleteNote(note = note) {
-                            navController.navigate(NavRoute.Diary.route)
+                            navigator.navigate(DiaryScreenDestination)
                         }
                     }) {
                         Text(text = Constants.Keys.DELETE)
@@ -161,7 +159,7 @@ fun NoteScreen(
                         .padding(horizontal = 32.dp)
                         .fillMaxWidth(),
                     onClick = {
-                        navController.navigate(NavRoute.Diary.route)
+                        navigator.navigate(DiaryScreenDestination)
                     }
                 ) {
                     Text(text = Constants.Keys.NAV_BACK)
@@ -183,11 +181,11 @@ fun prevNoteScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        NoteScreen (
+        /*NoteScreen (
             navController = rememberNavController(),
             viewModel = mViewModel,
-            noteId = "1",
-            folderId = "0"
-        )
+            noteId = 1,
+            folderId = 0
+        )*/
     }
 }

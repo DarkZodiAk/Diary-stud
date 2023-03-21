@@ -11,17 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.model.Folder
-import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.screens.destinations.DiaryScreenDestination
 import com.android.diarystud.screens.elements.FolderTopAppBar
 import com.android.diarystud.utils.Constants
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-//@Destination
+@Destination
 @Composable
-fun AddFolderScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun AddFolderScreen(navigator: DestinationsNavigator, viewModel: MainViewModel) {
     var title by remember { mutableStateOf("") }
     var isButtonEnabled by remember { mutableStateOf(false) }
     Scaffold(
@@ -29,10 +29,10 @@ fun AddFolderScreen(navController: NavHostController, viewModel: MainViewModel) 
             FolderTopAppBar(
                 title = Constants.Keys.ADD_FOLDER,
                 isButtonEnabled = isButtonEnabled,
-                onCloseClick = { navController.navigate(NavRoute.Diary.route) },
+                onCloseClick = { navigator.navigate(DiaryScreenDestination) },
                 onDoneClick = {
                     viewModel.addFolder(folder = Folder(name = title)){
-                        navController.navigate(NavRoute.Diary.route)
+                        navigator.navigate(DiaryScreenDestination)
                     }
                 }
             )

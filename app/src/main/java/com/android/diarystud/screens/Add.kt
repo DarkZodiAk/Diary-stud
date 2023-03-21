@@ -18,19 +18,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Note
-import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.screens.destinations.DiaryScreenDestination
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-//@Destination
+@Destination
 @Composable
-fun AddScreen(navController: NavHostController,
+fun AddScreen(navigator: DestinationsNavigator,
               viewModel: MainViewModel,
               folderId: Int
 ) {
@@ -76,7 +75,7 @@ fun AddScreen(navController: NavHostController,
                 enabled = isButtonEnabled,
                 onClick = {
                     viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId)) {
-                        navController.navigate(NavRoute.Diary.route)
+                        navigator.navigate(DiaryScreenDestination)
                     }
                 }
             ) {
@@ -94,6 +93,6 @@ fun prevAddScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        AddScreen(navController = rememberNavController(), viewModel = mViewModel, folderId = 0)
+        //AddScreen(navigator = remember, viewModel = mViewModel, folderId = 0)
     }
 }

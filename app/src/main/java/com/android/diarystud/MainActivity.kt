@@ -14,22 +14,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.android.diarystud.navigation.DiaryNavHost
+import com.android.diarystud.screens.NavGraphs
 import com.android.diarystud.ui.theme.DiaryStudTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DiaryStudTheme {
-                val context = LocalContext.current
-                val mViewModel: MainViewModel =
-                    viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    DiaryNavHost(mViewModel)
+                    DestinationsNavHost(navGraph = NavGraphs.root)
                 }
             }
         }

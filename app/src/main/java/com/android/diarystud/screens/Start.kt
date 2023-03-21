@@ -12,21 +12,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
-import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.screens.destinations.DiaryScreenDestination
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants
 import com.android.diarystud.utils.Constants.Keys.AUTH_WITH_GOOGLE
 import com.android.diarystud.utils.TYPE_ROOM
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-
-//@Destination(start = true)
+@RootNavGraph(start = true)
+@Destination
 @Composable
-fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun StartScreen(navigator: DestinationsNavigator) {
+    val context = LocalContext.current
+    val viewModel: MainViewModel =
+        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -41,7 +44,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
             Button(
                 onClick = {
                     viewModel.initDatabase(TYPE_ROOM){
-                        navController.navigate(route = NavRoute.Diary.route)
+                        navigator.navigate(DiaryScreenDestination)
                     }
                 },
                 modifier = Modifier
@@ -61,6 +64,6 @@ fun prevStartScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        StartScreen(navController = rememberNavController(), viewModel = mViewModel)
+        //StartScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

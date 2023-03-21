@@ -17,33 +17,34 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Note
-import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.Preview.DestinationsNavigatorPreview
+import com.android.diarystud.screens.destinations.AddFolderScreenDestination
+import com.android.diarystud.screens.destinations.AddScreenDestination
+import com.android.diarystud.screens.destinations.NoteScreenDestination
 import com.android.diarystud.screens.elements.DiaryTopAppBar
 import com.android.diarystud.screens.elements.DrawerAddFolder
 import com.android.diarystud.screens.elements.DrawerBody
 import com.android.diarystud.ui.theme.DiaryStudTheme
 import com.android.diarystud.utils.Constants.Keys.DEFAULT_FOLDER_NAME
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-//@Destination
+@Destination
 @Composable
-fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun DiaryScreen(navigator: DestinationsNavigator, viewModel: MainViewModel) {
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
     val folderId by remember { mutableStateOf(0) } // Да да, хардкодим
-    val folderName by remember { mutableStateOf(DEFAULT_FOLDER_NAME) }
+    val folderName by remember { mutableStateOf(DEFAULT_FOLDER_NAME) } //Здесь можно получить по-другому
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -53,7 +54,7 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(NavRoute.Add.route + "/${folderId}")
+                    navigator.navigate(AddScreenDestination(folderId = folderId))
                 }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -79,7 +80,7 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
                 },
                 bottomBar = {
                     DrawerAddFolder{
-                        navController.navigate(NavRoute.AddFolder.route)
+                        navigator.navigate(AddFolderScreenDestination)
                     }
                 }
             )
@@ -89,20 +90,20 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
             modifier = Modifier.padding(it)
         ) {
             items(notes) { note ->
-                NoteItem(note = note, navController = navController, folderId)
+                NoteItem(note = note, navigator = navigator) //TODO("А нафига здесь folderId?")
             }
         }
     }
 }
 
 @Composable
-fun NoteItem(note: Note, navController: NavHostController, folderId: Int) {
+fun NoteItem(note: Note, navigator: DestinationsNavigator) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(NavRoute.Note.route + "/${folderId}/${note.id}")
+                navigator.navigate(NoteScreenDestination(noteId = note.id, folderId = note.folder))
             },
         elevation = 6.dp
     ) {
@@ -124,9 +125,9 @@ fun NoteItem(note: Note, navController: NavHostController, folderId: Int) {
 @Composable
 fun prevDiaryScreen() {
     DiaryStudTheme {
-        val context = LocalContext.current
+        val context = Application()
         val mViewModel: MainViewModel =
-            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        DiaryScreen(navController = rememberNavController(), viewModel = mViewModel)
+            viewModel(factory = MainViewModelFactory(context))
+        DiaryScreen(navigator = DestinationsNavigatorPreview(), viewModel = mViewModel)
     }
 }
