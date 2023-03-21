@@ -30,14 +30,13 @@ import com.android.diarystud.utils.Constants
 @Composable
 fun AddScreen(navController: NavHostController,
               viewModel: MainViewModel,
-              folderId: Int
+              folderId: String?
 ) {
     var title by remember { mutableStateOf("") }
     var subtitle by remember { mutableStateOf("") }
     var isButtonEnabled by remember { mutableStateOf(false) }
 
     Scaffold {
-        
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,7 +72,7 @@ fun AddScreen(navController: NavHostController,
                 modifier = Modifier.padding(top = 16.dp),
                 enabled = isButtonEnabled,
                 onClick = {
-                    viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId)) {
+                    viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId!!.toInt())) {
                         navController.navigate(NavRoute.Diary.route)
                     }
                 }
@@ -92,6 +91,6 @@ fun prevAddScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        AddScreen(navController = rememberNavController(), viewModel = mViewModel, folderId = 0)
+        //AddScreen(navController = rememberNavController(), viewModel = mViewModel, folderId = 0)
     }
 }

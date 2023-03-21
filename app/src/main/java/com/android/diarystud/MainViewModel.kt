@@ -90,10 +90,11 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     fun readAllNotes() = REPOSITORY.readAllNotes
 
     fun readAllFolders() = REPOSITORY.readAllFolders
+
+    fun readLastFolderId() = REPOSITORY.readLastFolderId
 }
 
 

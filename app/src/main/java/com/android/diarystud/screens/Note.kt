@@ -32,7 +32,6 @@ fun NoteScreen(
     viewModel: MainViewModel,
     noteId: String?,
     folderId: String?
-    /*title: Int*/
 ) {
     //Эти 4 строки кода... Надо подумать, а можно ли сделать по-другому?
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value

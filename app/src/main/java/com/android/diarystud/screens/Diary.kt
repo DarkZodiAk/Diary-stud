@@ -27,21 +27,31 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
+import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.screens.elements.DiaryTopAppBar
 import com.android.diarystud.screens.elements.DrawerAddFolder
 import com.android.diarystud.screens.elements.DrawerBody
 import com.android.diarystud.ui.theme.DiaryStudTheme
+import com.android.diarystud.utils.Constants
 import com.android.diarystud.utils.Constants.Keys.DEFAULT_FOLDER_NAME
 import kotlinx.coroutines.launch
 
 @Composable
-fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun DiaryScreen(navController: NavHostController,
+                viewModel: MainViewModel,
+                folderId: String?
+) {
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
-    val folderId by remember { mutableStateOf(0) } // Да да, хардкодим
-    val folderName by remember { mutableStateOf(DEFAULT_FOLDER_NAME) }
+
+    var foldId by remember { mutableStateOf(folderId) }
+    Log.d("What folder1?","$foldId")
+    var folder by remember {
+        mutableStateOf( folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME))
+    }
+    Log.d("What folder2?","${folder.id}")
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -51,7 +61,7 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(NavRoute.Add.route + "/${folderId}")
+                    navController.navigate(NavRoute.Add.route + "/${folder.id}")
                 }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -61,7 +71,7 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
             }
         },
         topBar = {
-            DiaryTopAppBar(title = folderName){
+            DiaryTopAppBar(title = folder.name){
                 coroutineScope.launch {
                     scaffoldState.drawerState.open()
                 }
@@ -72,12 +82,16 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
                 modifier = Modifier.fillMaxSize(),
                 content = {
                     DrawerBody(folders = folders, modifier = Modifier.padding(it)){ fld ->
-                        Log.d("Folder_NAV","Clicked at folder ${fld.name}")
+                        folder = fld
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.close()
+                        }
                     }
                 },
                 bottomBar = {
                     DrawerAddFolder{
-                        navController.navigate(NavRoute.AddFolder.route)
+                        navController.navigate(NavRoute.AddFolder.route + "/${folder.id}")
+                        folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME)
                     }
                 }
             )
@@ -125,6 +139,6 @@ fun prevDiaryScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        DiaryScreen(navController = rememberNavController(), viewModel = mViewModel)
+        //DiaryScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

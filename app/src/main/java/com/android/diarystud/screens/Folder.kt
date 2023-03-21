@@ -1,5 +1,6 @@
 package com.android.diarystud.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,18 +20,23 @@ import com.android.diarystud.screens.elements.FolderTopAppBar
 import com.android.diarystud.utils.Constants
 
 @Composable
-fun AddFolderScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun AddFolderScreen(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    folderId: String?
+) {
     var title by remember { mutableStateOf("") }
     var isButtonEnabled by remember { mutableStateOf(false) }
+    Log.d("Folder", "$folderId")
     Scaffold(
         topBar = {
             FolderTopAppBar(
                 title = Constants.Keys.ADD_FOLDER,
                 isButtonEnabled = isButtonEnabled,
-                onCloseClick = { navController.navigate(NavRoute.Diary.route) },
+                onCloseClick = { navController.navigate(NavRoute.Diary.route + "/$folderId") },
                 onDoneClick = {
                     viewModel.addFolder(folder = Folder(name = title)){
-                        navController.navigate(NavRoute.Diary.route)
+                        navController.navigate(NavRoute.Diary.route + "/${viewModel.readLastFolderId()}")
                     }
                 }
             )

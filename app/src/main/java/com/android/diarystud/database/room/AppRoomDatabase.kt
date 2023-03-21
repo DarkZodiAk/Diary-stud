@@ -38,7 +38,6 @@ abstract class AppRoomDatabase: RoomDatabase() {
                         "`title` TEXT NOT NULL, `subtitle` TEXT NOT NULL, " +
                         "`folder_id` INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY(`folder_id`) REFERENCES `folders_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-
             }
         }
 

@@ -1,5 +1,6 @@
 package com.android.diarystud.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,14 +24,25 @@ fun DiaryNavHost(mViewModel: MainViewModel) {
 
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
         composable(NavRoute.Start.route){ StartScreen(navController = navController, viewModel = mViewModel) }
-        composable(NavRoute.Diary.route){ DiaryScreen(navController = navController, viewModel = mViewModel) }
-        composable(NavRoute.AddFolder.route){ AddFolderScreen(navController = navController, viewModel = mViewModel) }
+        composable(NavRoute.Diary.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
+            DiaryScreen(
+                navController = navController,
+                viewModel = mViewModel,
+                folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID)
+            )
+        }
+        composable(NavRoute.AddFolder.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
+            AddFolderScreen(
+                navController = navController,
+                viewModel = mViewModel,
+                folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID)
+            )
+        }
         composable(NavRoute.Add.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
             AddScreen(
                 navController = navController,
                 viewModel = mViewModel,
-                // Попробуем прямо интом сделать без нулла
-                folderId = backStackEntry.arguments!!.getString(Constants.Keys.FOLDER_ID)!!.toInt()
+                folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID)
             )
         }
         composable(NavRoute.Note.route + "/{${Constants.Keys.FOLDER_ID}}/{${Constants.Keys.NOTE_ID}}") { backStackEntry ->

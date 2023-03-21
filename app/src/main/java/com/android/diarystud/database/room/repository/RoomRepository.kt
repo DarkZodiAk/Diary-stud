@@ -32,6 +32,9 @@ class RoomRepository(private val noteRoomDao: NoteRoomDao,
     override val readAllFolders: LiveData<List<Folder>>
         get() = folderRoomDao.getAllFolders()
 
+    override val readLastFolderId: Int
+        get() = folderRoomDao.getLastFolderId()
+
     override suspend fun createFolder(folder: Folder, onSuccess: () -> Unit) {
         folderRoomDao.addFolder(folder = folder)
         onSuccess()

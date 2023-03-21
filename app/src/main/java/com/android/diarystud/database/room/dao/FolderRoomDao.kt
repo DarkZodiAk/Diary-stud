@@ -11,6 +11,9 @@ interface FolderRoomDao {
     @Query("SELECT * FROM folders_table")
     fun getAllFolders(): LiveData<List<Folder>>
 
+    @Query("SELECT id FROM folders_table ORDER BY id DESC LIMIT 1")
+    fun getLastFolderId(): Int
+
     @Insert
     suspend fun addFolder(folder: Folder)
 

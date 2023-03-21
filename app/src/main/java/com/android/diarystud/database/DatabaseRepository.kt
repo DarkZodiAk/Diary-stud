@@ -16,10 +16,11 @@ interface DatabaseRepository {
 
     val readAllFolders: LiveData<List<Folder>>
 
+    val readLastFolderId: Int
+
     suspend fun createFolder(folder: Folder, onSuccess: ()-> Unit)
 
     suspend fun updateFolder(folder: Folder, onSuccess: ()-> Unit)
 
     suspend fun deleteFolder(folder: Folder, onSuccess: ()-> Unit)
-
 }
