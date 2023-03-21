@@ -25,10 +25,6 @@ import com.android.diarystud.utils.TYPE_ROOM
 
 @Composable
 fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
-    val context = LocalContext.current
-    val mViewModel: MainViewModel = 
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -42,7 +38,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
             Text(text = Constants.Keys.WELCOME)
             Button(
                 onClick = {
-                    mViewModel.initDatabase(TYPE_ROOM){
+                    viewModel.initDatabase(TYPE_ROOM){
                         navController.navigate(route = NavRoute.Diary.route)
                     }
                 },

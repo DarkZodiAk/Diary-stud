@@ -87,20 +87,20 @@ fun DiaryScreen(navController: NavHostController, viewModel: MainViewModel) {
             modifier = Modifier.padding(it)
         ) {
             items(notes) { note ->
-                NoteItem(note = note, navController = navController, folderId)
+                NoteItem(note = note, navController = navController)
             }
         }
     }
 }
 
 @Composable
-fun NoteItem(note: Note, navController: NavHostController, folderId: Int) {
+fun NoteItem(note: Note, navController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(NavRoute.Note.route + "/${folderId}/${note.id}")
+                navController.navigate(NavRoute.Note.route + "/${note.folder}/${note.id}")
             },
         elevation = 6.dp
     ) {
