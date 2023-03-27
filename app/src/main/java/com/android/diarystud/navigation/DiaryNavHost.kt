@@ -15,7 +15,8 @@ sealed class NavRoute(val route: String){
     object Diary: NavRoute(Constants.Screens.DIARY_SCREEN);
     object Add: NavRoute(Constants.Screens.ADD_SCREEN);
     object Note: NavRoute(Constants.Screens.NOTE_SCREEN);
-    object AddFolder: NavRoute(Constants.Screens.FOLDER_SCREEN)
+    object AddFolder: NavRoute(Constants.Screens.ADD_FOLDER_SCREEN)
+    object UpdateFolder: NavRoute(Constants.Screens.UPDATE_FOLDER_SCREEN)
 }
 
 @Composable
@@ -38,6 +39,14 @@ fun DiaryNavHost(mViewModel: MainViewModel) {
                 folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID)
             )
         }
+        composable(NavRoute.UpdateFolder.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
+            UpdateFolderScreen(
+                navController = navController,
+                viewModel = mViewModel,
+                folderId = backStackEntry.arguments?.getString(Constants.Keys.FOLDER_ID)
+            )
+        }
+
         composable(NavRoute.Add.route + "/{${Constants.Keys.FOLDER_ID}}"){ backStackEntry ->
             AddScreen(
                 navController = navController,

@@ -18,6 +18,8 @@ interface DatabaseRepository {
 
     val readLastFolderId: Int
 
+    suspend fun getFolderById(id: Int, onSuccess: (Folder) -> Unit)
+
     suspend fun createFolder(folder: Folder, onSuccess: ()-> Unit)
 
     suspend fun updateFolder(folder: Folder, onSuccess: ()-> Unit)

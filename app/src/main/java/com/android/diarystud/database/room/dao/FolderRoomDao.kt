@@ -14,6 +14,9 @@ interface FolderRoomDao {
     @Query("SELECT id FROM folders_table ORDER BY id DESC LIMIT 1")
     fun getLastFolderId(): Int
 
+    @Query("SELECT * FROM folders_table WHERE id = :id")
+    fun getFolderById(id: Int): Folder
+
     @Insert
     suspend fun addFolder(folder: Folder)
 

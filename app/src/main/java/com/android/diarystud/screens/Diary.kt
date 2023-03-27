@@ -82,12 +82,20 @@ fun DiaryScreen(navController: NavHostController,
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 content = {
-                    DrawerBody(folders = folders, modifier = Modifier.padding(it)){ fld ->
-                        folder = fld
-                        coroutineScope.launch {
-                            scaffoldState.drawerState.close()
+                    DrawerBody(
+                        folders = folders,
+                        modifier = Modifier.padding(it),
+                        onItemClick = { fld ->
+                            folder = fld
+                            coroutineScope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        },
+                        onDeleteClick = {},
+                        onUpdateClick = { fld ->
+                            navController.navigate(NavRoute.UpdateFolder.route + "/${fld.id}")
                         }
-                    }
+                    )
                 },
                 bottomBar = {
                     DrawerAddFolder{

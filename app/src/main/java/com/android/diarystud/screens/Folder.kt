@@ -9,6 +9,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,7 +28,6 @@ fun AddFolderScreen(
 ) {
     var title by remember { mutableStateOf("") }
     var isButtonEnabled by remember { mutableStateOf(false) }
-    Log.d("Folder", "$folderId")
     Scaffold(
         topBar = {
             FolderTopAppBar(
@@ -37,6 +37,57 @@ fun AddFolderScreen(
                 onDoneClick = {
                     viewModel.addFolder(folder = Folder(name = title)){ fldId ->
                         navController.navigate(NavRoute.Diary.route + "/$fldId")
+                    }
+                }
+            )
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OutlinedTextField(
+                value = title,
+                onValueChange = {
+                    title = it
+                    isButtonEnabled = title.isNotEmpty()
+                },
+                label = { Text(text = Constants.Keys.FOLDER_TITLE) },
+                isError = title.isEmpty()
+            )
+        }
+    }
+}
+
+@Composable
+fun UpdateFolderScreen(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    folderId: String?
+) {
+    val folders = viewModel.readAllFolders().observeAsState(listOf()).value
+    val folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(id = -1, name = "")
+    //TODO("Ну явный костыль, не?")
+
+    var title by remember { mutableStateOf("") }
+    var isButtonEnabled by remember { mutableStateOf(true) }
+
+    if (folder.id != -1){
+        title = folder.name
+    }
+
+    Scaffold(
+        topBar = {
+            FolderTopAppBar(
+                title = Constants.Keys.UPDATE_FOLDER,
+                isButtonEnabled = isButtonEnabled,
+                onCloseClick = { navController.navigate(NavRoute.Diary.route + "/$folderId") },
+                onDoneClick = {
+                    viewModel.updateFolder(folder = Folder(id = folder.id, name = title)){
+                        navController.navigate(NavRoute.Diary.route + "/$folderId")
                     }
                 }
             )

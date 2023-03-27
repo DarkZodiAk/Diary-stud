@@ -1,11 +1,13 @@
 package com.android.diarystud.screens.elements
 
 import android.view.GestureDetector
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -26,9 +29,10 @@ import com.android.diarystud.utils.Constants.Keys.ADD_FOLDER
 /*@Composable
 fun FolderRow(
     folder: Folder,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (Folder) -> Unit,
+    onItemClick: () -> Unit,
     onUpdateClick: () -> Unit,
     onDeleteClick: () -> Unit
 ){
@@ -37,14 +41,27 @@ fun FolderRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .background(if (isSelected) Color.LightGray else Color.White)
             .pointerInput(Unit){
                 detectTapGestures(
-                    onTap = { onItemClick(folder) },
+                    onTap = { onItemClick() },
                     onLongPress = { folderButtonEnabled = true }
                 )
-            }
+            },
+        horizontalArrangement = Arrangement.SpaceBetween
     ){
-
+        Text(
+            text = folder.name,
+            style = itemTextStyle
+        )
+        if (isSelected) {
+            IconButton(onClick = { }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+            }
+            IconButton(onClick = { }) {
+                Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+            }
+        }
     }
 }*/
 
@@ -54,34 +71,38 @@ fun DrawerBody(
     folders: List<Folder>,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (Folder) -> Unit/*,
-    onUpdateClick: () -> Unit,
-    onDeleteClick: () -> Unit*/
+    onItemClick: (Folder) -> Unit,
+    onUpdateClick: (Folder) -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     val gestureDetector: GestureDetector
-    var folderButtonsEnabled by remember { mutableStateOf(false) }
+    var selectedRowIndex by remember { mutableStateOf(-1) }
     LazyColumn(modifier){
-        items(folders){ folder ->
+        itemsIndexed(folders){ index, folder ->
             Row(modifier = Modifier
-                .fillMaxWidth()
-                .pointerInput(Unit){
-                    detectTapGestures(
-                        onTap = { onItemClick(folder) },
-                        onLongPress = { folderButtonsEnabled = true }
-                    )
-                }
-                .padding(16.dp)
+                    .fillMaxWidth()
+                    .background(if (selectedRowIndex == index) Color.LightGray else Color.White)
+                    .pointerInput(Unit){
+                        detectTapGestures(
+                            onTap = { onItemClick(folder) },
+                            onLongPress = { selectedRowIndex = index }
+                        )
+                    },
+                horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
+                    modifier = Modifier.padding(16.dp),
                     text = folder.name,
                     style = itemTextStyle
                 )
-                if (folderButtonsEnabled) {
-                    IconButton(onClick = {/*TODO(Что?)*/ }) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                    }
-                    IconButton(onClick = {/*TODO(Что?)*/ }) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+                if (selectedRowIndex == index && index != 0) {
+                    Row(modifier = Modifier.padding(4.dp)) {
+                        IconButton(onClick = { onDeleteClick() }) {
+                            Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                        }
+                        IconButton(onClick = { onUpdateClick(folder) }) {
+                            Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+                        }
                     }
                 }
             }

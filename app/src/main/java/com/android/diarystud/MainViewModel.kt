@@ -62,6 +62,16 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
 
     private fun readLastFolderId() = REPOSITORY.readLastFolderId
 
+    fun getFolderById(id: Int, onSuccess: (Folder) -> Unit){
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.getFolderById(id = id){ folder ->
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess(folder)
+                }
+            }
+        }
+    }
+
     fun addFolder(folder: Folder, onSuccess: (Int) -> Unit){
         viewModelScope.launch(Dispatchers.IO) {
             REPOSITORY.createFolder(folder = folder){
