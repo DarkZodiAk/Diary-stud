@@ -60,11 +60,14 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun addFolder(folder: Folder, onSuccess: () -> Unit){
+    private fun readLastFolderId() = REPOSITORY.readLastFolderId
+
+    fun addFolder(folder: Folder, onSuccess: (Int) -> Unit){
         viewModelScope.launch(Dispatchers.IO) {
             REPOSITORY.createFolder(folder = folder){
+                 val folderId = readLastFolderId()
                 viewModelScope.launch(Dispatchers.Main) {
-                    onSuccess()
+                    onSuccess(folderId)
                 }
             }
         }
@@ -93,8 +96,6 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
     fun readAllNotes() = REPOSITORY.readAllNotes
 
     fun readAllFolders() = REPOSITORY.readAllFolders
-
-    fun readLastFolderId() = REPOSITORY.readLastFolderId
 }
 
 

@@ -73,7 +73,8 @@ fun AddScreen(navController: NavHostController,
                 enabled = isButtonEnabled,
                 onClick = {
                     viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId!!.toInt())) {
-                        navController.navigate(NavRoute.Diary.route)
+                        navController.navigate(NavRoute.Diary.route + "/$folderId")
+                    //TODO("добавить выбор папки. А хотя нет. Можно создавать заметки прямо из папки, а затем их перетаскивать в менюшке")
                     }
                 }
             ) {

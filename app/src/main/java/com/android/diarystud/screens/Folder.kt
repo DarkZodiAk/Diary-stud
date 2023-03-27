@@ -35,8 +35,8 @@ fun AddFolderScreen(
                 isButtonEnabled = isButtonEnabled,
                 onCloseClick = { navController.navigate(NavRoute.Diary.route + "/$folderId") },
                 onDoneClick = {
-                    viewModel.addFolder(folder = Folder(name = title)){
-                        navController.navigate(NavRoute.Diary.route + "/${viewModel.readLastFolderId()}")
+                    viewModel.addFolder(folder = Folder(name = title)){ fldId ->
+                        navController.navigate(NavRoute.Diary.route + "/$fldId")
                     }
                 }
             )

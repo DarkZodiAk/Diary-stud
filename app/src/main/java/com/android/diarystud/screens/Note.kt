@@ -145,7 +145,7 @@ fun NoteScreen(
                     }
                     Button(onClick = {
                         viewModel.deleteNote(note = note) {
-                            navController.navigate(NavRoute.Diary.route)
+                            navController.navigate(NavRoute.Diary.route + "/$folderId")
                         }
                     }) {
                         Text(text = Constants.Keys.DELETE)
@@ -158,7 +158,7 @@ fun NoteScreen(
                         .padding(horizontal = 32.dp)
                         .fillMaxWidth(),
                     onClick = {
-                        navController.navigate(NavRoute.Diary.route)
+                        navController.navigate(NavRoute.Diary.route + "/$folderId")
                     }
                 ) {
                     Text(text = Constants.Keys.NAV_BACK)

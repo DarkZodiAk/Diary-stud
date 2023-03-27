@@ -46,12 +46,13 @@ fun DiaryScreen(navController: NavHostController,
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
 
-    var foldId by remember { mutableStateOf(folderId) }
-    Log.d("What folder1?","$foldId")
     var folder by remember {
         mutableStateOf( folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME))
     }
-    Log.d("What folder2?","${folder.id}")
+
+    if (folderId != "0"){
+        folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME)
+    }
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -91,7 +92,6 @@ fun DiaryScreen(navController: NavHostController,
                 bottomBar = {
                     DrawerAddFolder{
                         navController.navigate(NavRoute.AddFolder.route + "/${folder.id}")
-                        folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME)
                     }
                 }
             )
@@ -101,7 +101,9 @@ fun DiaryScreen(navController: NavHostController,
             modifier = Modifier.padding(it)
         ) {
             items(notes) { note ->
-                NoteItem(note = note, navController = navController)
+                if (note.folder == folder.id) {
+                    NoteItem(note = note, navController = navController)
+                }
             }
         }
     }
