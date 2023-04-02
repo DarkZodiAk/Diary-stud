@@ -24,18 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
+import com.android.diarystud.screens.elements.DeleteDialog
 import com.android.diarystud.screens.elements.DiaryTopAppBar
 import com.android.diarystud.screens.elements.DrawerAddFolder
 import com.android.diarystud.screens.elements.DrawerBody
 import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.utils.Constants
-import com.android.diarystud.utils.Constants.Keys.DEFAULT_FOLDER_NAME
+import com.android.diarystud.screens.elements.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants.Keys.DEFAULT_FOLDER_NAME
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,16 +46,18 @@ fun DiaryScreen(navController: NavHostController,
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
 
+    var fldId by remember { mutableStateOf(folderId!!.toInt()) }
+    var chosenFolder by remember { mutableStateOf(Folder(name = DEFAULT_FOLDER_NAME)) }
     var folder by remember {
-        mutableStateOf( folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME))
+        mutableStateOf( folders.firstOrNull { it.id == fldId } ?: Folder(name = DEFAULT_FOLDER_NAME))
     }
-
-    if (folderId != "0"){
-        folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = DEFAULT_FOLDER_NAME)
+    if (fldId != 0){
+        folder = folders.firstOrNull { it.id == fldId } ?: Folder(name = DEFAULT_FOLDER_NAME)
     }
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    var deleteDialogIsOpen by remember { mutableStateOf(false) }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -85,13 +87,18 @@ fun DiaryScreen(navController: NavHostController,
                     DrawerBody(
                         folders = folders,
                         modifier = Modifier.padding(it),
+                        scaffoldState = scaffoldState,
                         onItemClick = { fld ->
                             folder = fld
+                            fldId = folder.id
                             coroutineScope.launch {
                                 scaffoldState.drawerState.close()
                             }
                         },
-                        onDeleteClick = {},
+                        onDeleteClick = {
+                            deleteDialogIsOpen = true
+                            chosenFolder = it
+                        },
                         onUpdateClick = { fld ->
                             navController.navigate(NavRoute.UpdateFolder.route + "/${fld.id}")
                         }
@@ -113,6 +120,19 @@ fun DiaryScreen(navController: NavHostController,
                     NoteItem(note = note, navController = navController)
                 }
             }
+        }
+        if (deleteDialogIsOpen){
+            DeleteDialog(
+                onConfirmClick = {
+                    if (fldId == chosenFolder.id){
+                        fldId = 0
+                        folder = Folder(name = DEFAULT_FOLDER_NAME)
+                    }
+                    viewModel.deleteFolder(chosenFolder){}
+                    deleteDialogIsOpen = false
+                },
+                onDismiss = { deleteDialogIsOpen = false}
+            )
         }
     }
 }

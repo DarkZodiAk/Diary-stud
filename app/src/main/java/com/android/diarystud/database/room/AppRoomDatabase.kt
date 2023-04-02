@@ -10,9 +10,9 @@ import com.android.diarystud.database.room.dao.FolderRoomDao
 import com.android.diarystud.database.room.dao.NoteRoomDao
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
-import com.android.diarystud.utils.Constants.Keys.FOLDERS_TABLE
-import com.android.diarystud.utils.Constants.Keys.NOTES_TABLE
-import com.android.diarystud.utils.Constants.Keys.NOTE_DATABASE
+import com.android.diarystud.screens.elements.utils.Constants.Keys.FOLDERS_TABLE
+import com.android.diarystud.screens.elements.utils.Constants.Keys.NOTES_TABLE
+import com.android.diarystud.screens.elements.utils.Constants.Keys.NOTE_DATABASE
 
 //version - это просто число. Когда структура БД (столбцы, таблицы и т.д.) изменяется, надо увеличить версию на 1
 //НИ В КОЕМ СЛУЧАЕ НЕ ИСПОЛЬЗОВАТЬ .fallbackToDestructiveMigration(). Надо писать SQL-запросы.

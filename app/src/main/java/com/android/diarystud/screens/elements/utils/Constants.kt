@@ -1,4 +1,4 @@
-package com.android.diarystud.utils
+package com.android.diarystud.screens.elements.utils
 
 import com.android.diarystud.database.DatabaseRepository
 
@@ -30,7 +30,7 @@ object Constants {
         const val FOLDER_ID = "folder_id"
         const val NONE = "none"
         const val UPDATE = "UPDATE"
-        const val DELETE = "DELETE"
+        const val DELETE = "Удалить"
         const val NAV_BACK = "NAV_BACK"
         const val EDIT_NOTE = "Edit note"
         const val EMPTY = ""

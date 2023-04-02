@@ -18,9 +18,9 @@ import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.utils.Constants
-import com.android.diarystud.utils.Constants.Keys.AUTH_WITH_GOOGLE
-import com.android.diarystud.utils.TYPE_ROOM
+import com.android.diarystud.screens.elements.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants.Keys.AUTH_WITH_GOOGLE
+import com.android.diarystud.screens.elements.utils.TYPE_ROOM
 
 
 @Composable

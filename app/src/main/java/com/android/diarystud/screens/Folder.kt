@@ -17,7 +17,7 @@ import com.android.diarystud.MainViewModel
 import com.android.diarystud.model.Folder
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.screens.elements.FolderTopAppBar
-import com.android.diarystud.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants
 
 @Composable
 fun AddFolderScreen(

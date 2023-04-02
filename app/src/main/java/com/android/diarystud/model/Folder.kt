@@ -3,7 +3,7 @@ package com.android.diarystud.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.android.diarystud.utils.Constants.Keys.FOLDERS_TABLE
+import com.android.diarystud.screens.elements.utils.Constants.Keys.FOLDERS_TABLE
 
 @Entity(tableName = FOLDERS_TABLE)
 data class Folder(

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.screens.*
-import com.android.diarystud.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants
 
 
 sealed class NavRoute(val route: String){

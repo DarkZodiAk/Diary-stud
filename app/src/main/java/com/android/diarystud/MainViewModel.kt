@@ -7,9 +7,9 @@ import com.android.diarystud.database.room.AppRoomDatabase
 import com.android.diarystud.database.room.repository.RoomRepository
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
-import com.android.diarystud.utils.REPOSITORY
-import com.android.diarystud.utils.TYPE_FIREBASE
-import com.android.diarystud.utils.TYPE_ROOM
+import com.android.diarystud.screens.elements.utils.REPOSITORY
+import com.android.diarystud.screens.elements.utils.TYPE_FIREBASE
+import com.android.diarystud.screens.elements.utils.TYPE_ROOM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

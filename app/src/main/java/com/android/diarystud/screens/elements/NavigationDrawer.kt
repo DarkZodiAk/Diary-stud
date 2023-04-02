@@ -1,8 +1,11 @@
 package com.android.diarystud.screens.elements
 
 import android.view.GestureDetector
+import androidx.compose.animation.VectorConverter
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.diarystud.model.Folder
-import com.android.diarystud.utils.Constants.Keys.ADD_FOLDER
+import com.android.diarystud.screens.elements.utils.Constants.Keys.ADD_FOLDER
 
 /*@Composable
 fun FolderRow(
@@ -66,28 +69,42 @@ fun FolderRow(
 }*/
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DrawerBody(
     folders: List<Folder>,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
+    scaffoldState: ScaffoldState,
     onItemClick: (Folder) -> Unit,
     onUpdateClick: (Folder) -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: (Folder) -> Unit
 ) {
-    val gestureDetector: GestureDetector
+
     var selectedRowIndex by remember { mutableStateOf(-1) }
-    LazyColumn(modifier){
+    
+    LaunchedEffect(key1 = scaffoldState.drawerState.isOpen){
+        if (!scaffoldState.drawerState.isOpen){
+            selectedRowIndex = -1
+        }
+    } /*TODO("Это что еще за прикол такой, а? Надо в этих эффектах разобраться")*/
+    
+    LazyColumn(
+        modifier
+            .fillMaxSize()
+            .pointerInput(Unit) { detectTapGestures(onTap = { selectedRowIndex = -1 }) }
+    ){
         itemsIndexed(folders){ index, folder ->
             Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(if (selectedRowIndex == index) Color.LightGray else Color.White)
-                    .pointerInput(Unit){
-                        detectTapGestures(
-                            onTap = { onItemClick(folder) },
-                            onLongPress = { selectedRowIndex = index }
-                        )
+                .fillMaxWidth()
+                .background(if (selectedRowIndex == index) Color(215, 215, 215) else Color.White)
+                .combinedClickable(
+                    onClick = {
+                        selectedRowIndex = -1
+                        onItemClick(folder)
                     },
+                    onLongClick = { selectedRowIndex = index }
+                ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
@@ -97,7 +114,7 @@ fun DrawerBody(
                 )
                 if (selectedRowIndex == index && index != 0) {
                     Row(modifier = Modifier.padding(4.dp)) {
-                        IconButton(onClick = { onDeleteClick() }) {
+                        IconButton(onClick = { onDeleteClick(folder) }) {
                             Icon(imageVector = Icons.Default.Delete, contentDescription = null)
                         }
                         IconButton(onClick = { onUpdateClick(folder) }) {
@@ -119,6 +136,7 @@ fun DrawerAddFolder(onButtonClick: () -> Unit){
                 onButtonClick()
             }
             .padding(16.dp)
+
     ){
         Icon(
             imageVector = Icons.Default.Add,

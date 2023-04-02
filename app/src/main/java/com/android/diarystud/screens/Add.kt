@@ -25,7 +25,7 @@ import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants
 
 @Composable
 fun AddScreen(navController: NavHostController,

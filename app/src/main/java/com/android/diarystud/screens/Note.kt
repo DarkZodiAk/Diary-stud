@@ -22,7 +22,7 @@ import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.utils.Constants
+import com.android.diarystud.screens.elements.utils.Constants
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
