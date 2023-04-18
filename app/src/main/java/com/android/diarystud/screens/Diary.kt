@@ -1,7 +1,5 @@
 package com.android.diarystud.screens
 
-import android.app.Application
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +15,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.android.diarystud.MainViewModel
-import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
@@ -33,8 +27,6 @@ import com.android.diarystud.screens.elements.DeleteDialog
 import com.android.diarystud.screens.elements.DiaryTopAppBar
 import com.android.diarystud.screens.elements.DrawerAddFolder
 import com.android.diarystud.screens.elements.DrawerBody
-import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.screens.elements.utils.Constants
 import com.android.diarystud.screens.elements.utils.Constants.Keys.DEFAULT_FOLDER_NAME
 import kotlinx.coroutines.launch
 
@@ -51,7 +43,8 @@ fun DiaryScreen(navController: NavHostController,
     var folder by remember {
         mutableStateOf( folders.firstOrNull { it.id == fldId } ?: Folder(name = DEFAULT_FOLDER_NAME))
     }
-    if (fldId != 0){
+
+    if (fldId != 0){ //TODO("А здесь что делать?")
         folder = folders.firstOrNull { it.id == fldId } ?: Folder(name = DEFAULT_FOLDER_NAME)
     }
 
@@ -159,16 +152,5 @@ fun NoteItem(note: Note, navController: NavHostController) {
             )
             Text(text = note.subtitle)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun prevDiaryScreen() {
-    DiaryStudTheme {
-        val context = LocalContext.current
-        val mViewModel: MainViewModel =
-            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        //DiaryScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Note
@@ -56,7 +55,7 @@ fun AddScreen(navController: NavHostController,
                     title = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
-                label = { Text(text = Constants.Keys.NOTE_TITLE) },
+                label = { Text(text = Constants.Keys.TITLE) },
                 isError = title.isEmpty()
             )
             OutlinedTextField(
@@ -65,7 +64,7 @@ fun AddScreen(navController: NavHostController,
                     subtitle = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
-                label = { Text(text = Constants.Keys.NOTE_SUBTITLE) },
+                label = { Text(text = Constants.Keys.SUBTITLE) },
                 isError = subtitle.isEmpty()
             )
             Button (
@@ -74,7 +73,6 @@ fun AddScreen(navController: NavHostController,
                 onClick = {
                     viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId!!.toInt())) {
                         navController.navigate(NavRoute.Diary.route + "/$folderId")
-                    //TODO("добавить выбор папки. А хотя нет. Можно создавать заметки прямо из папки, а затем их перетаскивать в менюшке")
                     }
                 }
             ) {

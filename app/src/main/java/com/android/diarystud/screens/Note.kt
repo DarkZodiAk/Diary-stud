@@ -1,27 +1,25 @@
 package com.android.diarystud.screens
 
-import android.app.Application
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
-import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Folder
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
-import com.android.diarystud.ui.theme.DiaryStudTheme
+import com.android.diarystud.screens.elements.ChooseFolder
 import com.android.diarystud.screens.elements.utils.Constants
 import kotlinx.coroutines.launch
 
@@ -37,10 +35,19 @@ fun NoteScreen(
     val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     val folders = viewModel.readAllFolders().observeAsState(listOf()).value
     val note = notes.firstOrNull{ it.id == noteId?.toInt()} ?: Note(title = Constants.Keys.NONE, subtitle = Constants.Keys.NONE, folder = 0)
-    // Вообще по-хорошему надо не !! прописывать, а автоматом выезжать на главную страничку при ошибке
-    val folder = folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = Constants.Keys.NONE)
+
+
+    var folder by remember {
+        mutableStateOf(folders.firstOrNull { it.id == folderId?.toInt() } ?: Folder(name = Constants.Keys.DEFAULT_FOLDER_NAME))
+    }
+    if (folderId != "0"){ //TODO("Это тоже надо как-то исправить")
+        folder = folders.firstOrNull { it.id == folderId!!.toInt() } ?: Folder(name = Constants.Keys.DEFAULT_FOLDER_NAME)
+    }
+
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var folderDialogState by remember { mutableStateOf(false) }
+
     val coroutineScope = rememberCoroutineScope()
     var title by remember { mutableStateOf(Constants.Keys.EMPTY) }
     var subtitle by remember { mutableStateOf(Constants.Keys.EMPTY) }
@@ -76,13 +83,26 @@ fun NoteScreen(
                         label = { Text(text = Constants.Keys.SUBTITLE) },
                         isError = subtitle.isEmpty()
                     )
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { folderDialogState = true }
+                        .padding(vertical = 12.dp, horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        Text(text = "Папка")
+                        Row(){
+                            Text(text = folder.name, color = Color.Gray)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight, tint = Color.Gray, contentDescription = null)
+                        }
+                    }
                     Button(
                         modifier = Modifier.padding(top = 16.dp),
                         onClick = {
                             viewModel.updateNote(note =
-                                Note(id = note.id, title = title, subtitle = subtitle, folder = folderId!!.toInt())
+                                Note(id = note.id, title = title, subtitle = subtitle, folder = folder.id)
                             ) {
-                                navController.navigate(NavRoute.Diary.route)
+                                navController.navigate(NavRoute.Diary.route + "/${folder.id}")
                             }
                         }
                     ) {
@@ -165,26 +185,16 @@ fun NoteScreen(
                 }
 
             }
-
+            if (folderDialogState){
+                ChooseFolder(
+                    folders = folders,
+                    onDismiss = { folderDialogState = false },
+                    onSuccess = { fld ->
+                        folder = fld
+                        folderDialogState = false
+                    }
+                )
+            }
         }
-    }
-
-
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun prevNoteScreen() {
-    DiaryStudTheme {
-        val context = LocalContext.current
-        val mViewModel: MainViewModel =
-            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        NoteScreen (
-            navController = rememberNavController(),
-            viewModel = mViewModel,
-            noteId = "1",
-            folderId = "0"
-        )
     }
 }
