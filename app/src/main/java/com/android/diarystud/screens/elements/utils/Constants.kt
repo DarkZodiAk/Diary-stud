@@ -42,5 +42,8 @@ object Constants {
         const val NOTE_SCREEN = "note_screen"
         const val ADD_FOLDER_SCREEN = "add_folder_screen"
         const val UPDATE_FOLDER_SCREEN = "update_folder_screen"
+        const val SETTINGS_SCREEN = "settings_screen"
+        const val CALENDAR_SCREEN = "calendar_screen"
+        const val GROUPS_SCREEN = "groups_screen"
     }
 }
