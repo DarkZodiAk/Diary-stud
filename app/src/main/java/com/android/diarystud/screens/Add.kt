@@ -19,23 +19,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.android.diarystud.MainViewModel
 import com.android.diarystud.MainViewModelFactory
 import com.android.diarystud.model.Note
 import com.android.diarystud.navigation.NavRoute
 import com.android.diarystud.ui.theme.DiaryStudTheme
-import com.android.diarystud.utils.Constants
-
+import com.android.diarystud.screens.elements.utils.Constants
 
 @Composable
-fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun AddScreen(navController: NavHostController,
+              viewModel: MainViewModel,
+              folderId: String?
+) {
     var title by remember { mutableStateOf("") }
     var subtitle by remember { mutableStateOf("") }
     var isButtonEnabled by remember { mutableStateOf(false) }
 
     Scaffold {
-        
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -55,7 +55,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     title = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
-                label = { Text(text = Constants.Keys.NOTE_TITLE) },
+                label = { Text(text = Constants.Keys.TITLE) },
                 isError = title.isEmpty()
             )
             OutlinedTextField(
@@ -64,15 +64,15 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
                     subtitle = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
-                label = { Text(text = Constants.Keys.NOTE_SUBTITLE) },
+                label = { Text(text = Constants.Keys.SUBTITLE) },
                 isError = subtitle.isEmpty()
             )
             Button (
                 modifier = Modifier.padding(top = 16.dp),
                 enabled = isButtonEnabled,
                 onClick = {
-                    viewModel.addNote(note = Note(title = title, subtitle = subtitle)) {
-                        navController.navigate(NavRoute.Diary.route)
+                    viewModel.addNote(note = Note(title = title, subtitle = subtitle, folder = folderId!!.toInt())) {
+                        navController.navigate(NavRoute.Diary.route + "/$folderId")
                     }
                 }
             ) {
@@ -90,6 +90,6 @@ fun prevAddScreen() {
         val context = LocalContext.current
         val mViewModel: MainViewModel =
             viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-        AddScreen(navController = rememberNavController(), viewModel = mViewModel)
+        //AddScreen(navController = rememberNavController(), viewModel = mViewModel, folderId = 0)
     }
 }
