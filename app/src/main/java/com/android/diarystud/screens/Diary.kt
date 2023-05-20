@@ -83,6 +83,10 @@ fun NoteItem(note: Note, navController: NavHostController) {
     }
 }
 
+
+
+
+
 @Preview(showBackground = true)
 @Composable
 fun prevDiaryScreen() {

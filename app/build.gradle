@@ -73,10 +73,10 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
 
-
+    // bottomNav
     def nav_version = "2.4.1"
     implementation "androidx.navigation:navigation-compose: $nav_version"
-
+    // bottomNav
     def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

@@ -31,9 +31,12 @@ object Constants {
     }
 
     object Screens {
-        const val START_SCREEN = "start_screen"
-        const val DIARY_SCREEN = "diary_screen"
-        const val ADD_SCREEN = "add_screen"
-        const val NOTE_SCREEN = "note_screen"
+        const val START_SCREEN = "start"
+        const val DIARY_SCREEN = "diary"
+        const val ADD_SCREEN = "add"
+        const val NOTE_SCREEN = "note"
+        const val SETTINGS_SCREEN = "settings"
+        const val CALENDAR_SCREEN = "calendar"
+        const val GROUPS_SCREEN = "groups"
     }
 }
